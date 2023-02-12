@@ -144,7 +144,7 @@ func InitRoutes(cdb *CachedDatabase) {
 			},
 		})
 	})
-	r.Run("127.0.0.1:" + SafeGetEnvStr(PREFIX+"_PORT", "4444"))
+	r.Run(":" + SafeGetEnvStr(PREFIX+"_PORT", "4444"))
 }
 
 func Error(c *gin.Context, err error, code int) {

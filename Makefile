@@ -6,9 +6,11 @@ build:
 	mkdir -p bin/
 	go build -o bin/${BINARY_NAME} $(SOURCES)
 
-linux:
-	mkdir -p bin/
-	GOOS=linux GOARCH=arm64 go build -o bin/${BINARY_NAME}-linux-arm64 $(SOURCES)
+docker-build:
+	go build -o ${DIST_PATH} $(SOURCES)
+
+docker:
+	docker build . -f Dockerfile -t mperon/ip-whois:latest
 
 run:
 	go run main.go ipdb.go routes.go envutil.go
