@@ -107,7 +107,7 @@ func (d *IPDatabase) Search(address string) (*Company, error) {
 	//convert ip address to object
 	ipAddr, err := netip.ParseAddr(address)
 	if err != nil {
-		return nil, fmt.Errorf("invalid ip address: %s", address)
+		return nil, fmt.Errorf("invalid ip address")
 	}
 	// now make the search
 	var ipStruct *IPStruct
@@ -163,14 +163,14 @@ func (st *IPStruct) traverse(ipAddr netip.Addr, parts []string) (*Company, error
 		//acessa
 		ip_id, err := strconv.ParseUint(parts[0], 16, 64)
 		if err != nil {
-			return nil, fmt.Errorf("cannot convert ip address to number: %v", parts[0])
+			return nil, fmt.Errorf("cannot convert ip address to number")
 		}
 		v, found := st.Children[ip_id]
 		if found {
 			return v.traverse(ipAddr, parts[1:])
 		}
 	}
-	return nil, fmt.Errorf("IP address not found in this database! %v", ipAddr)
+	return nil, fmt.Errorf("IP address not found in this database")
 }
 
 func (st *IPStruct) Add(prefix netip.Prefix, company *Company) {

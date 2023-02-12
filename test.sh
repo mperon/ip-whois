@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-curl 0:4000 -X POST -d '
+curl 0:4444 -X POST -d '
 {
     "addresses": [
         { "ip": "45.180.216.33" },

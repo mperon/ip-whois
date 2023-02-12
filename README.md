@@ -1,4 +1,4 @@
-# Registro.br - IP Whois Database Server
+# IP-Whois - IP Whois Database Server Search
 
 Build on golang, this is an web application to identify owners of ip addresses on registro.br database.
 
@@ -38,4 +38,3 @@ The result will be:
    }
 }
 ```
-

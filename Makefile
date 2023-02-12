@@ -6,19 +6,25 @@ build:
 	mkdir -p bin/
 	go build -o bin/${BINARY_NAME} $(SOURCES)
 
+linux:
+	mkdir -p bin/
+	GOOS=linux GOARCH=arm64 go build -o bin/${BINARY_NAME}-linux-arm64 $(SOURCES)
+
 run:
 	go run main.go ipdb.go routes.go envutil.go
 
-compile:
+dist:
 	echo "Compiling for every OS and Platform"
 	mkdir -p bin/
-	GOOS=linux GOARCH=arm go build -o bin/${BINARY_NAME}-linux-arm $(SOURCES)
+	GOOS=linux GOARCH=amd64 go build -o bin/${BINARY_NAME}-linux-amd64 $(SOURCES)
 	GOOS=linux GOARCH=arm64 go build -o bin/${BINARY_NAME}-linux-arm64 $(SOURCES)
+	GOOS=darwin GOARCH=amd64 go build -o bin/${BINARY_NAME}-darwin-amd64 $(SOURCES)
+	GOOS=darwin GOARCH=arm64 go build -o bin/${BINARY_NAME}-darwin-arm64 $(SOURCES)
+	GOOS=windows GOARCH=amd64 go build -o bin/${BINARY_NAME}-windows-amd64.exe $(SOURCES)
 
 clean:
 	go clean
-	rm bin/${BINARY_NAME}-linux-arm
-	rm bin/${BINARY_NAME}-linux-arm64
+	rm -rf bin/*
 
  test:
 	go test ./...
