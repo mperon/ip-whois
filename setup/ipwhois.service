@@ -1,0 +1,10 @@
+Description=ipwhois
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+ExecStart=/opt/bin/ip-whois
+
+[Install]
+WantedBy=multi-user.target
