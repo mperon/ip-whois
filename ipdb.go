@@ -8,6 +8,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"go4.org/netipx"
 )
 
 type Company struct {
@@ -174,15 +176,17 @@ func (st *IPStruct) traverse(ipAddr netip.Addr, parts []string) (*Company, error
 }
 
 func (st *IPStruct) Add(prefix netip.Prefix, company *Company) {
-	parts := strings.Split(prefix.Addr().String(), st.Separator)
-	st.parsePrefix(prefix, company, parts)
+	rng := netipx.RangeOfPrefix(prefix)
+	from := strings.Split(rng.From().String(), st.Separator)
+	to := strings.Split(rng.To().String(), st.Separator)
+	st.parsePrefix(prefix, company, from, to)
 }
 
-func (st *IPStruct) parsePrefix(prefix netip.Prefix, company *Company, parts []string) {
-	if len(parts) == 0 {
+func (st *IPStruct) parsePrefix(prefix netip.Prefix, company *Company, from []string, to []string) {
+	if len(from) == 0 {
 		return
 	}
-	if parts[0] == "" || parts[0] == "0" {
+	if from[0] != to[0] || from[0] == "0" || to[0] == "" || from[0] == "" || to[0] == "" {
 		//fim da linha/adiciona aqui
 		st.Ranges = append(st.Ranges, IPRange{
 			Company: company,
@@ -191,7 +195,7 @@ func (st *IPStruct) parsePrefix(prefix netip.Prefix, company *Company, parts []s
 		return
 	}
 	// navega na estrutura
-	ip_id, err := strconv.ParseUint(parts[0], 16, 64)
+	ip_id, err := strconv.ParseUint(to[0], 16, 64)
 	if err != nil {
 		panic("Cannot convert string to uint number!")
 	}
@@ -202,7 +206,7 @@ func (st *IPStruct) parsePrefix(prefix netip.Prefix, company *Company, parts []s
 		pStruct.Key = int64(ip_id)
 		st.Children[ip_id] = pStruct
 	}
-	pStruct.parsePrefix(prefix, company, parts[1:])
+	pStruct.parsePrefix(prefix, company, from[1:], to[1:])
 }
 
 func (c *Company) String() string {

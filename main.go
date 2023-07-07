@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"sync"
-
 	"time"
 )
 
